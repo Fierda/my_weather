@@ -1,9 +1,9 @@
-const tsParser = require('@typescript-eslint/parser');
-const tsPlugin = require('@typescript-eslint/eslint-plugin');
-const reactPlugin = require('eslint-plugin-react');
+import tsParser from '@typescript-eslint/parser';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
+import reactPlugin from 'eslint-plugin-react';
 
 /** @type {import("eslint").Linter.FlatConfig[]} */
-module.exports = [
+export default [
   {
     files: ['**/*.{js,ts,jsx,tsx}'],
     languageOptions: {
@@ -17,8 +17,8 @@ module.exports = [
       },
     },
     plugins: {
-      '@typescript-eslint': tsPlugin, // ✅ fix here
-      react: reactPlugin,             // ✅ fix here
+      '@typescript-eslint': tsPlugin,
+      react: reactPlugin,
     },
     rules: {
       // TypeScript ESLint rules
