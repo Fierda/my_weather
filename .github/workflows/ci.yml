@@ -62,7 +62,7 @@ jobs:
       - name: Lint and test
         run: |
           npx eslint . --report-unused-disable-directives --max-warnings 0
-          npm run test -- --coverage --watchAll=false
+          npm run test -- --watchAll=false
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
