@@ -1,7 +1,12 @@
+# test_main.py
+import os
+# Set environment variables BEFORE importing the app
+os.environ["OPENWEATHER_API_KEY"] = "test_api_key_12345"
+os.environ["WEATHER_API_BASE_URL"] = "https://api.openweathermap.org/data/2.5"
+
 import pytest
 from httpx import AsyncClient
 from app.main import app
-
 
 @pytest.mark.asyncio
 async def test_health_check():
@@ -9,7 +14,6 @@ async def test_health_check():
         response = await ac.get("/health")
     assert response.status_code == 200
     assert response.json() == {"status": "healthy", "service": "weather-api"}
-
 
 @pytest.mark.asyncio
 async def test_root():
