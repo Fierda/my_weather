@@ -17,8 +17,8 @@ module.exports = [
       },
     },
     plugins: {
-      '@typescript-eslint': tsPlugin.rules,
-      react: reactPlugin.rules,
+      '@typescript-eslint': tsPlugin, // ✅ fix here
+      react: reactPlugin,             // ✅ fix here
     },
     rules: {
       // TypeScript ESLint rules
