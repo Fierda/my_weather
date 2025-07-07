@@ -61,7 +61,7 @@ jobs:
 
       - name: Lint and test
         run: |
-          npx eslint . --report-unused-disable-directives --max-warnings 0
+          npm run lint
           npm run test -- --coverage --watchAll=false
 
       - name: Upload coverage report
