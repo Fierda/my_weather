@@ -1,9 +1,13 @@
 # Stage 1: Build React App
 FROM node:20 AS build
 WORKDIR /app
+
+# Clean install to avoid broken native dependencies
 COPY package.json package-lock.json ./
-RUN npm install
+RUN rm -rf node_modules package-lock.json && npm install
+
 COPY . .
+
 RUN npm run build
 
 # Stage 2: Serve React App with Nginx
