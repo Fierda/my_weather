@@ -16,7 +16,6 @@ env:
   BACKEND_IMAGE: fierdakcap/weather-backend
 
 jobs:
-
   ### ====================
   ### 🧪 Test Backend
   ### ====================
@@ -27,19 +26,18 @@ jobs:
         working-directory: backend
     steps:
       - uses: actions/checkout@v4
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
       - name: Install dependencies
         run: pip install -r requirements.txt
-
       - name: Run tests
         working-directory: backend
+        env:
+          OPENWEATHER_API_KEY: ${{ vars.OPENWEATHER_API_KEY }}
+          WEATHER_API_BASE_URL: ${{ vars.WEATHER_API_BASE_URL }}
         run: PYTHONPATH=. pytest tests/ -v --cov=app --cov-report=xml && flake8 app/ --max-line-length=88
-
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
         with:

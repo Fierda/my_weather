@@ -1,10 +1,11 @@
+# backend/conftest.py
 import pytest
 import os
 
-# Set up environment variables before any imports
+# Set environment variables for tests
+os.environ.setdefault("OPENWEATHER_API_KEY", "local_test_key")
+os.environ.setdefault("WEATHER_API_BASE_URL", "https://api.openweathermap.org/data/2.5")
+
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment():
-    """Set up test environment variables before any tests run"""
-    os.environ["OPENWEATHER_API_KEY"] = "test_api_key_12345"
-    os.environ["WEATHER_API_BASE_URL"] = "https://api.openweathermap.org/data/2.5"
     yield
