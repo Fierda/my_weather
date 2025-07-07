@@ -1,0 +1,128 @@
+stages:
+  - test
+  - build
+  - deploy-local
+
+variables:
+  DOCKER_REGISTRY: docker.io
+  FRONTEND_IMAGE: fierdakcap/weather-frontend
+  BACKEND_IMAGE: fierdakcap/weather-backend
+  DOCKER_DRIVER: overlay2
+  K3D_CLUSTER_NAME: weather-cluster
+
+
+test_backend:
+  stage: test
+  image: python:3.11-slim
+  before_script:
+    - cd backend
+    - pip install -r requirements.txt
+  script:
+    - pytest tests/ -v --cov=app --cov-report=xml
+    - flake8 app/ --max-line-length=88
+  coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: backend/coverage.xml
+  only:
+    changes:
+      - backend/**/*
+      - .gitlab-ci.yml
+
+test_frontend:
+  stage: test
+  image: node:20-slim
+  before_script:
+    - cd frontend
+    - npm ci
+  script:
+    - npm run lint
+    - npm run test -- --coverage --watchAll=false
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: frontend/coverage/cobertura-coverage.xml
+  only:
+    changes:
+      - frontend/**/*
+      - .gitlab-ci.yml
+
+build_backend:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay2
+  before_script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin
+  script:
+    - cd backend
+    - docker build -t $BACKEND_IMAGE:$CI_COMMIT_SHA .
+    - docker tag $BACKEND_IMAGE:$CI_COMMIT_SHA $BACKEND_IMAGE:latest
+    - docker push $BACKEND_IMAGE:$CI_COMMIT_SHA
+    - docker push $BACKEND_IMAGE:latest
+  only:
+    changes:
+      - backend/**/*
+      - .gitlab-ci.yml
+
+build-frontend:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay2
+  before_script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin
+  script:
+    - cd frontend
+    - docker build -t $FRONTEND_IMAGE:$CI_COMMIT_SHA .
+    - docker tag $FRONTEND_IMAGE:$CI_COMMIT_SHA $FRONTEND_IMAGE:latest
+    - docker push $FRONTEND_IMAGE:$CI_COMMIT_SHA
+    - docker push $FRONTEND_IMAGE:latest
+  only:
+    changes:
+      - frontend/**/*
+      - .gitlab-ci.yml
+
+deploy-local:
+  stage: deploy-local
+  image: alpine/k8s:1.28.4
+  before_script:
+    - apk add --update curl bash make
+    - curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+    # Setup kubeconfig
+    - mkdir -p $HOME/.kube
+    - k3d kubeconfig get $K3D_CLUSTER_NAME > $HOME/.kube/config || true
+  script:
+    - make setup
+    - make build
+    - make deploy
+    - make status
+  environment:
+    name: local
+    url: http://weather.local:8080
+  when: manual
+  only:
+    - develop
+    - main
+
+cleanup-local:
+  stage: deploy-local
+  image: alpine/k8s:1.28.4
+  before_script:
+    - apk add --update curl bash
+    - curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+  script:
+    - echo "🧹 Cleaning up local k3d cluster..."
+    - k3d cluster delete $K3D_CLUSTER_NAME || true
+    - docker system prune -f || true
+  when: manual
+  only:
+    - develop
+    - main
