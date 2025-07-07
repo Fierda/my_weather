@@ -10,3 +10,4 @@ pytest-asyncio==0.21.1
 pytest-cov==4.1.0      
 flake8==6.1.0
 gunicorn==21.2.0
+pydantic-settings>=2.0
