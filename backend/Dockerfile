@@ -1,4 +1,4 @@
-FROM bitnami/python:3.11-prod
+FROM bitnami/python:3.11
 
 WORKDIR /app
 
