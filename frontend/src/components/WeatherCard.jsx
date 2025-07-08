@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import SearchForm from './SearchForm';
+import SearchForm from './SearchForm.jsx';
 
 export default function WeatherCard() {
   const [weather, setWeather] = useState(null);
