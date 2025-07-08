@@ -25,6 +25,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: weather-backend-service
+            name: weather-backend
             port:
               number: 8000

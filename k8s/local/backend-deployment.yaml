@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: weather-backend
-        image: localhost:5000/weather-backend:latest
+        image: fierdakcap/weather-backend:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8000

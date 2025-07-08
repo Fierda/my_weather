@@ -32,9 +32,9 @@ help:
 
 # Variables
 CLUSTER_NAME := weather-cluster
-REGISTRY_PORT := 5000
-BACKEND_IMAGE := localhost:$(REGISTRY_PORT)/weather-backend:latest
-FRONTEND_IMAGE := localhost:$(REGISTRY_PORT)/weather-frontend:latest
+REGISTRY_PORT := 5556
+BACKEND_IMAGE := fierdakcap/weather-backend:latest
+FRONTEND_IMAGE := fierdakcap/weather-frontend:latest
 
 setup:
 	@echo "Setting up k3d cluster..."
@@ -42,8 +42,6 @@ setup:
 	k3d cluster create $(CLUSTER_NAME) \
 		--port "8080:80@loadbalancer" \
 		--port "8443:443@loadbalancer" \
-		--port "$(REGISTRY_PORT):$(REGISTRY_PORT)" \
-		--registry-create weather-registry:0.0.0.0:$(REGISTRY_PORT) \
 		--agents 2; \
 	else \
 		echo "⚠️  Cluster $(CLUSTER_NAME) already exists"; \

@@ -8,6 +8,15 @@ RUN rm -rf node_modules package-lock.json && npm install
 
 COPY . .
 
+RUN echo '/** @type {import("tailwindcss").Config} */\n\
+module.exports = {\n\
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],\n\
+  theme: {\n\
+    extend: {},\n\
+  },\n\
+  plugins: [],\n\
+};' > tailwind.config.js
+
 RUN npm run build
 
 # Stage 2: Serve React App with Nginx
