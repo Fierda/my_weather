@@ -100,6 +100,7 @@ jobs:
           ./sonar-scanner-*/bin/sonar-scanner \
             -Dsonar.projectKey=weather-frontend \
             -Dsonar.sources=src \
+            -Dsonar.coverageReportPaths=coverage/cobertura-coverage.xml \
             -Dsonar.host.url=https://100f48ac957c.ngrok-free.app \
             -Dsonar.login=$SONAR_TOKEN \
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
