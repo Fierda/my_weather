@@ -53,7 +53,7 @@ jobs:
           ./sonar-scanner-*/bin/sonar-scanner \
             -Dsonar.projectKey=weather-backend \
             -Dsonar.sources=app \
-            -Dsonar.host.url= https://100f48ac957c.ngrok-free.app \
+            -Dsonar.host.url=https://100f48ac957c.ngrok-free.app \
             -Dsonar.login=$SONAR_TOKEN \
             -Dsonar.python.coverage.reportPaths=coverage.xml
 
