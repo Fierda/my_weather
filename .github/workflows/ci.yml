@@ -89,7 +89,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: frontend-coverage
-          path: frontend/coverage/cobertura-coverage.xml
+          path: frontend/coverage/lcov.info
 
       - name: Run SonarQube Scanner for Frontend
         env:
@@ -104,7 +104,6 @@ jobs:
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
             -Dsonar.host.url=https://100f48ac957c.ngrok-free.app \
             -Dsonar.login=$SONAR_TOKEN \
-            -X
 
 
 
