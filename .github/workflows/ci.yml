@@ -94,6 +94,7 @@ jobs:
       - name: Run SonarQube Scanner for Frontend
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        working-directory: frontend
         run: |
           curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
           unzip sonar-scanner.zip
@@ -103,7 +104,7 @@ jobs:
             -Dsonar.coverageReportPaths=coverage/cobertura-coverage.xml \
             -Dsonar.host.url=https://100f48ac957c.ngrok-free.app \
             -Dsonar.login=$SONAR_TOKEN \
-            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            -X
 
 
 
