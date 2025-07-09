@@ -17,8 +17,8 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     coverage: {
-      reporter: ['cobertura', 'text'], 
-      reportsDirectory: 'coverage',   
+      reporter: ['lcov', 'text'],
+      reportsDirectory: 'coverage',
     },
-  },
+  }
 });
