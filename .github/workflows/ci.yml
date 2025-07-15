@@ -44,18 +44,18 @@ jobs:
         with:
           name: backend-coverage
           path: backend/coverage.xml
-      - name: Run SonarQube Scanner for Backend
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-          unzip sonar-scanner.zip
-          ./sonar-scanner-*/bin/sonar-scanner \
-            -Dsonar.projectKey=weather-backend \
-            -Dsonar.sources=app \
-            -Dsonar.host.url=https://100f48ac957c.ngrok-free.app \
-            -Dsonar.login=$SONAR_TOKEN \
-            -Dsonar.python.coverage.reportPaths=coverage.xml
+      # - name: Run SonarQube Scanner for Backend
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #   run: |
+      #     curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+      #     unzip sonar-scanner.zip
+      #     ./sonar-scanner-*/bin/sonar-scanner \
+      #       -Dsonar.projectKey=weather-backend \
+      #       -Dsonar.sources=app \
+      #       -Dsonar.host.url=https://100f48ac957c.ngrok-free.app \
+      #       -Dsonar.login=$SONAR_TOKEN \
+      #       -Dsonar.python.coverage.reportPaths=coverage.xml
 
 
   ### ====================
@@ -91,19 +91,19 @@ jobs:
           name: frontend-coverage
           path: frontend/coverage/lcov.info
 
-      - name: Run SonarQube Scanner for Frontend
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        working-directory: frontend
-        run: |
-          curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-          unzip sonar-scanner.zip
-          ./sonar-scanner-*/bin/sonar-scanner \
-            -Dsonar.projectKey=weather-frontend \
-            -Dsonar.sources=src \
-            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
-            -Dsonar.host.url=https://100f48ac957c.ngrok-free.app \
-            -Dsonar.login=$SONAR_TOKEN \
+      # - name: Run SonarQube Scanner for Frontend
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #   working-directory: frontend
+      #   run: |
+      #     curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+      #     unzip sonar-scanner.zip
+      #     ./sonar-scanner-*/bin/sonar-scanner \
+      #       -Dsonar.projectKey=weather-frontend \
+      #       -Dsonar.sources=src \
+      #       -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
+      #       -Dsonar.host.url=https://100f48ac957c.ngrok-free.app \
+      #       -Dsonar.login=$SONAR_TOKEN \
 
 
 

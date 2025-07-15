@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: weather-local
+  namespace: argocd
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  source:
+    repoURL: https://github.com/fierdakcap/weatherapp_cicd
+    targetRevision: main
+    path: k8s/local
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

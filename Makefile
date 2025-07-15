@@ -80,7 +80,7 @@ build:
 	@echo "✅ Images built and pushed to local registry"
 
 # Deploy to k3d
-deploy:
+deploy-manual:
 	@echo "📦 Deploying to k3d cluster..."
 	@kubectl apply -f k8s/local/
 	@echo "⏳ Waiting for deployments to be ready..."
@@ -88,6 +88,16 @@ deploy:
 	@kubectl wait --for=condition=available --timeout=300s deployment/weather-frontend -n weather-app || true
 	@echo "✅ Deployment complete!"
 	@make status
+
+# Deploy using Argo CD
+deploy:
+	@echo "📦 Deploying via Argo CD..."
+	@kubectl apply -f k8s/local/weather-app.yaml
+	@echo "⏳ Waiting for Argo CD to sync the app..."
+	@kubectl wait --for=condition=Synced application/weather-local -n argocd --timeout=300s || true
+	@echo "✅ Argo CD application applied!"
+	@make status
+
 
 # Rebuild and redeploy everything
 redeploy: build deploy
@@ -190,3 +200,13 @@ restart:
 	@kubectl rollout status deployment/weather-backend -n weather-app
 	@kubectl rollout status deployment/weather-frontend -n weather-app
 	@echo "✅ Deployments restarted"
+
+argo-setup:
+	@echo "🚀 Installing Argo CD into the cluster..."
+	@kubectl create namespace argocd --dry-run=client -o yaml | kubectl apply -f -
+	@kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+	@echo "✅ Argo CD installed. Run 'make argo-dashboard' to access it."
+
+argo-dashboard:
+	@echo "🌐 Port forwarding Argo CD dashboard at https://localhost:8080 ..."
+	@kubectl port-forward svc/argocd-server -n argocd 8080:443
