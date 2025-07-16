@@ -8,7 +8,7 @@ spec:
     server: https://kubernetes.default.svc
     namespace: default
   source:
-    repoURL: https://github.com/fierdakcap/weatherapp_cicd
+    repoURL: https://github.com/Fierda/my_weather
     targetRevision: main
     path: k8s/local
   project: default

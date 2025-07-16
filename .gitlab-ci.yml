@@ -126,3 +126,39 @@ cleanup-local:
   only:
     - develop
     - main
+
+
+# ===========================
+# 🔍 SonarQube for Backend
+# ===========================
+# sonar_backend:
+#   stage: test  # or "sonar" if separated
+#   image: sonarsource/sonar-scanner-cli:latest
+#   variables:
+#     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # optional
+#     GIT_DEPTH: "0"  # ensures full git history for blame info
+#   script:
+#     - sonar-scanner
+#       -Dsonar.projectKey=weather-backend
+#       -Dsonar.sources=backend/app
+#       -Dsonar.python.coverage.reportPaths=backend/coverage.xml
+#       -Dsonar.host.url=https://your-sonarqube-url.com
+#       -Dsonar.login=$SONAR_TOKEN
+#   only:
+#     - main
+
+# ===========================
+# 🔍 SonarQube for Frontend
+# ===========================
+# sonar_frontend:
+#   stage: test  # or "sonar" if separated
+#   image: sonarsource/sonar-scanner-cli:latest
+#   script:
+#     - sonar-scanner
+#       -Dsonar.projectKey=weather-frontend
+#       -Dsonar.sources=frontend/src
+#       -Dsonar.javascript.lcov.reportPaths=frontend/coverage/lcov.info
+#       -Dsonar.host.url=https://your-sonarqube-url.com
+#       -Dsonar.login=$SONAR_TOKEN
+#   only:
+#     - main

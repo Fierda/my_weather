@@ -209,4 +209,4 @@ argo-setup:
 
 argo-dashboard:
 	@echo "🌐 Port forwarding Argo CD dashboard at https://localhost:8080 ..."
-	@kubectl port-forward svc/argocd-server -n argocd 8080:443
+	@kubectl port-forward svc/argocd-server -n argocd 9080:443
