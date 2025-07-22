@@ -5,6 +5,9 @@ import logging
 
 from app.models import WeatherResponse, LocationRequest
 from app.services.weather import WeatherService
+from app.auth import router as auth_router
+from app.deps import get_current_user
+from app.models import User
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -45,16 +48,17 @@ async def health_check():
 
 
 @app.post("/api/weather", response_model=WeatherResponse)
-async def get_weather(location: LocationRequest):
+async def get_weather(location: LocationRequest,current_user: User = Depends(get_current_user)):
     """Get current weather for a city (POST)"""
     return await weather_service.get_weather(location.city, location.country)
 
 
 @app.get("/api/weather/{city}", response_model=WeatherResponse)
-async def get_weather_by_city(city: str):
+async def get_weather_by_city(city: str,current_user: User = Depends(get_current_user)):
     """Get current weather for a city (GET)"""
     return await weather_service.get_weather(city)
 
+app.include_router(auth_router, prefix="/auth", tags=["Auth"])
 
 if __name__ == "__main__":
     import uvicorn
