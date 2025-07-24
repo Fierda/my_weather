@@ -36,6 +36,12 @@ jobs:
         env:
           OPENWEATHER_API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}
           WEATHER_API_BASE_URL: ${{ secrets.WEATHER_API_BASE_URL }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
           PYTHONPATH=. pytest tests/ -v --cov=app --cov-report=xml
           flake8 app/ --max-line-length=88 || echo "Linting issues found but not blocking"
